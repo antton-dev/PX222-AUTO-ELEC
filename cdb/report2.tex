@@ -153,6 +153,18 @@ Nous avons calculé la fonction de transfert en boucle fermée du système.
             &= \frac{\frac{K_{BO}}{1+K_{BO}}}{1 + \frac{\tau p }{1+K_{BO}}}
 \end{align*}
 
+On souhaite également une erreur statique de $5\%$. Or
+\begin{equation*}
+  \varepsilon = \frac{1}{1+K_{BO}} = \frac{1}{1+\frac{2kE_0}{R+R_{pu}}} = 0.05
+\end{equation*}
+donc \begin{equation*}
+  1 + \frac{2kE_0}{R+R_{pu}} = \frac{1}{0.05}
+\end{equation*}
+d'où \begin{equation*}
+  k = \Big(\frac{1}{0.05} -1\Big) \frac{R+R_{pu}}{2E_0}
+\end{equation*}
+En faisant l'application numérique avec $R+R_{pu} = \qty{26}{\ohm}$ et $E_0 = \qty{60}{V}$, on trouve $k\approx4.1$ 
+
 \chapter{Mardi 31 mars 2026}
 
 
