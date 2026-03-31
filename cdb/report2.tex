@@ -22,14 +22,15 @@
 \usepackage{fancyhdr}
 \usepackage{tikz}
 \hypersetup{hidelinks}
+\usepackage{listings}
 
 \usepackage{siunitx}
 \sisetup{
-    locale = FR,
-    separate-uncertainty,
-    inter-unit-product = \cdot
-}
-
+  locale = FR,
+  separate-uncertainty,
+  inter-unit-product = \cdot
+  }
+  
 \usepackage{pdfpages}
 \usepackage{anyfontsize}
 \usepackage{setspace}
@@ -38,6 +39,17 @@
 \allowdisplaybreaks
 \setlength{\parindent}{0pt}
 
+\lstset{
+    language=Matlab,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{purple},
+    numbers=left,
+    numberstyle=\tiny,
+    frame=single,
+    breaklines=true
+}
 
 \newcommand{\R}{\mathbb{R}}
 % Définition d'une couleur sobre pour le titre (gris très foncé)
@@ -166,6 +178,67 @@ d'où \begin{equation*}
 En faisant l'application numérique avec $R+R_{pu} = \qty{26}{\ohm}$ et $E_0 = \qty{60}{V}$, on trouve $k\approx4.1$ 
 
 \chapter{Mardi 31 mars 2026}
+Bien que théoriquement, le gain proportionnel de $4$ calculé précédemment fonctionne en théorie, il ne sera pas réalisable en pratique. En effet, l'erreur statique est comprise entre 0 et 1 et le signal de commande doit être compris entre 0 et 1. Or, pour une consigne de 1, on a $U_{com} = k \cdot 1 = 4$ ce qui est impossible à réaliser. Nous devons donc étudier la possibilité d'un correcteur proportionnel-intégral afin de pouvoir régler le paramètre d'intégration $\omega_i$. 
+
+Nous utilisons pour cela un script matlab qui nous permet de faire varier $\omega_i$, avec un gain $k=1$ et de visualiser la réponse temporelle du système. Nous choisissons la valeur la plus proche du dépassement de $5\%$. (figure 2.1). D'après la courbe jaune, nous trouvons alors $\omega_i = \qty{36.95}{rad/s}$. Nous l'avons paramétré de façoon à obtenir un dépassement inférieur à $5\%$.
+
+\begin{figure}[h]
+  \label{fig:pi}
+  \centering
+  \includegraphics[width=\textwidth]{img/correcteur_pi.jpeg}
+  \caption{Réponse temporelle du système pour différentes valeur de $\omega_i$}
+\end{figure}
+
+\clearpage
+
+\begin{lstlisting}[language=Matlab, caption={Script Matlab pour trouver le bon paramètre $\omega_i$}, captionpos=b]
+Rs = 14;            
+Rext = 12;          
+Rtot = Rs + Rext;   
+L = 1.2;            
+tau = L / Rtot;     
+
+E0 = 60;            
+Ka = 2 * E0;        
+B = 1;              
+
+s = tf('s');
+
+H_charge = (1/Rtot) / (1 + tau*s);
+H = Ka * H_charge * B;
+
+fprintf('modele du systeme');
+fprintf('Gain statique de la boucle ouverte (sans correcteur) : %.2f\n', dcgain(H));
+fprintf('Constante de temps tau : %.4f s\n\n', tau);
 
 
+k = 1;             
+wi_tests = [20,30,36.95,40]; 
+
+figure('Name', 'Optimisation du correcteur PI');
+hold on;
+
+for wi = wi_tests
+    R = k * (1 + wi/s);
+    
+    FTBO = R * H;
+    FTBF = feedback(FTBO, 1);
+   
+    [y, t] = step(FTBF, 0.5);
+    plot(t, y, 'LineWidth', 1.5);
+    
+    depassement = (max(y) - 1) * 100;
+    fprintf('Pour wi = %2d rad/s : Depassement = %.2f %%\n', wi, max(0, depassement));
+end
+
+yline(1.05, 'r--', 'Limite 5% depassement');
+yline(1.0, 'k-');
+title('Reponse a un echelon de courant (1A) - Correcteur PI');
+xlabel('Temps (s)');
+ylabel('Courant (A)');
+legend(string(wi_tests) + " rad/s", 'Location', 'best');
+grid on;
+\end{lstlisting}
+
+Pour la prochaine séance, nous devrons nous renseigner sur l'utilisation et la programmation de carte STM32, notamment sur les différents ports disponibles les différentes façon de brancher les différents élément du montage à la carte.
 \end{document}
