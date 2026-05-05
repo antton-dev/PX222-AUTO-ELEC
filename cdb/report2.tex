@@ -441,7 +441,7 @@ Le second étage réalise l'action intégrale $(1 + \frac{\omega_i}{p})$ via une
     \omega_i = \frac{1}{R_{212} \cdot C_{211}}
 \end{equation*}
 
-D'après nos simulations, nous avons optimisé $\omega_i = \qty{36,95}{rad/s}$, ce qui impose un produit $R_{212} \cdot C_{211} \approx \qty{0,027}{s}$. En utilisant les valeurs standards disponibles au laboratoire, nous fixons :
+D'après nos simulations, nous avons optimisé $\omega_i = \qty{36,95}{rad/s}$, ce qui impose un produit $R_{212} \cdot C_{211} \approx \qty{0,027}{s}$. En utilisant les valeurs standards disponibles au magasin, nous fixons :
 \begin{itemize}
     \item \textbf{Condensateur :} $C_{211} = \qty{1}{\mu F}$.
     \item \textbf{Résistance :} $R_{212} = \frac{1}{36,95 \cdot 10^{-6}} \approx \qty{27}{k\ohm}$ (Valeur normalisée la plus proche).
@@ -505,5 +505,121 @@ En conséquence, pour la séance suivante, nous prévoyons de modéliser l'inté
 \end{itemize}
 
 Cette étape de simulation globale est indispensable pour garantir que nos choix théoriques sont compatibles avec les contraintes technologiques de la maquette avant de procéder aux relevés expérimentaux finaux.
+
+\clearpage
+
+\chapter*{Interséance}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/Montage.png}
+  \caption{Schéma de montage pour la mise en œuvre du correcteur PI sur la maquette}
+\end{figure}
+
+\section{Analyse des résultats Simulink}
+La simulation effectuée avec $\omega_i = \qty{36,95}{rad/s}$ montre une réponse temporelle très satisfaisante. Nous observons :
+\begin{itemize}
+    \item \textbf{Dépassement} : Environ \qty{4,98}{\%}. Ce léger écart par rapport aux \qty{4,92}{\%} théoriques s'explique par la saturation de la commande à \qty{1}{V} qui sollicite davantage l'action intégrale en début d'échelon.
+    \item \textbf{Erreur statique} : Nulle, le courant rejoint précisément la consigne de \qty{1}{A}.
+    \item \textbf{Stabilité} : Le système est parfaitement stable et le régime établi est atteint en moins de \qty{100}{ms}.
+\end{itemize}
+Ces résultats valident notre paramétrage pour la mise en œuvre réelle sur la carte STM32 Nucléo-F103RB.
+
+Voici le modèle simulink que nous avons utilisé pour la simulation :
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/Simulink.png}
+    \caption{Modèle Simulink de l'asservissement de courant avec correcteur PI et saturation}
+    \end{figure}
+\chapter{Mardi 05 mai 2026}
+
+\section{Étude de robustesse : Influence de la variation de l'inductance $L$}
+
+Dans un système réel, et particulièrement avec une Bobine à Noyau de Fer (BNF), la valeur de l'inductance $L$ peut varier en fonction du point de fonctionnement (saturation du fer) ou des imprécisions de mesure initiale. Nous avons donc simulé le comportement du correcteur PI ($k=1, \omega_i = \qty{36,95}{rad/s}$) face à une variation de $\pm \qty{20}{\%}$ de la valeur nominale de $L$ ($1,2~\text{H}$).
+
+\subsection{Observations expérimentales}
+Les résultats obtenus sous Simulink mettent en évidence les points suivants :
+\begin{itemize}
+    \item \textbf{Augmentation de l'inductance ($L + \qty{20}{\%}$)} (Voir figure 4.1) : On observe un dépassement qui excède la limite des \qty{5}{\%}, atteignant environ \qty{7}{\%}. Cela s'explique par l'augmentation de la constante de temps $\tau = L/R_{tot}$. Le correcteur, dimensionné pour une charge plus rapide, devient "trop agressif" pour ce système ralenti, provoquant une oscillation plus marquée.
+    \item \textbf{Diminution de l'inductance ($L - \qty{20}{\%}$)} (Voir figure 4.2): À l'inverse, lorsque l'inductance diminue, le dépassement s'atténue fortement, rendant la réponse plus amortie. Le système gagne en stabilité mais perd légèrement en rapidité de montée.
+\end{itemize}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/bobine_variable_2.png}
+    \caption{Modèle Simulink de l'asservissement de courant avec correcteur PI et saturation}
+    \end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/Bobine_variable.png}
+    \caption{Modèle Simulink de l'asservissement de courant avec correcteur PI et saturation}
+    \end{figure}
+
+
+\subsection{Conclusion sur la robustesse}
+Cette simulation démontre que notre réglage de $\omega_i = \qty{36,95}{rad/s}$ se situe à la limite de la zone de validité du cahier des charges. Une augmentation imprévue de l'inductance sur la maquette réelle pourrait nous faire dépasser les \qty{5}{\%} de dépassement autorisés. 
+
+\section{Optimisation de la commande : Gestion de la saturation}
+
+L'analyse des résultats Simulink a montré que la saturation de la commande à \qty{1}{V} entraînait un dépassement de \qty{4.98}{\%}, supérieur aux \qty{4,92}{\%} théoriques. Ce phénomène est dû à l'accumulation de l'erreur dans l'action intégrale pendant la phase où la commande est saturée.
+
+\subsection{Principe de la déconnexion de l'intégrateur}
+Pour remédier à ce problème, nous avons implémenté une sécurité dans le code du microcontrôleur. Le principe consiste à suspendre l'actualisation de la variable \texttt{integrale} lorsque deux conditions sont réunies simultanément :
+\begin{enumerate}
+    \item La commande calculée atteint ou dépasse la limite physique (\qty{1}{V} ou \qty{0}{V}).
+    \item L'erreur est de même signe que la saturation (le système cherche à saturer davantage).
+\end{enumerate}
+
+Cette modification permet d'éviter que l'intégrateur ne "s'emballe" durant la phase transitoire. Dès que l'erreur change de signe, l'intégrateur redevient actif, permettant une stabilisation immédiate sans l'inertie liée à une accumulation excessive. Cette amélioration garantit un respect strict du dépassement de \qty{5}{\%}.
+
+\section{Mise à jour de l'algorithme de commande}
+Afin d'intégrer la protection contre l'accumulation de l'erreur en zone de saturation, nous avons réécrit les sections 2 et 3 de la boucle principale. Cette modification permet d'assurer que le dépassement reste inférieur à \qty{5}{\%}.
+
+\clearpage
+\begin{lstlisting}[language=C, caption={Optimisation de la boucle de calcul PI (Version 2)}, captionpos=b]
+    // Avant la boucle while(1), initialiser : float commande = 0.0f;
+
+    while (1) {
+        // --- 1. ACQUISITION ---
+        uint32_t val_adc = read_ADC();
+        float courant_mesure = (float)val_adc * (3.3f / 4095.0f);
+
+        // --- 2. CALCUL DU PI AVEC PROTECTION (VERROU) ---
+        float erreur = consigne - courant_mesure;
+
+        // On n'actualise l'integrale que si la commande n'est pas saturee
+        // ou si l'erreur tend a ramener le systeme en zone lineaire.
+        if (!((commande >= 1.0f && erreur > 0) || (commande <= 0.0f && erreur < 0))) {
+            integrale += erreur * Ts;
+        }
+
+        // Calcul de la commande brute
+        float commande_brute = Kp * (erreur + Wi * integrale);
+
+        // --- 3. SATURATION ET PROTECTION ---
+        // On bride la commande pour le registre du Timer (0-1V)
+        commande = commande_brute;
+        if (commande > 1.0f) commande = 1.0f;
+        if (commande < 0.0f) commande = 0.0f;
+
+        // --- 4. ACTION (PWM) ---
+        TIM1_CCR1 = (uint32_t)(commande * 3272.0f);
+
+        delay_ms(1); // Echantillonnage a 1kHz
+    }
+\end{lstlisting}
+
+\subsection{Conclusion de la séance 4}
+Cette séance a été consacrée à la validation virtuelle de notre asservissement via Simulink. Malgré l'absence de la maquette physique PX222, nos travaux ont permis de sécuriser l'implémentation logicielle sur la STM32 Nucleo-F103RB.
+
+\begin{itemize}
+    \item \textbf{Validation de la robustesse} : Les simulations ont révélé que notre réglage de $\omega_{i} = \qty{36,95}{rad/s}$ est optimal mais sensible aux variations de l'inductance $L$. Une augmentation de \qty{20}{\%} de $L$ fait passer le dépassement à environ \qty{7}{\%}, ce qui nous impose une vigilance particulière lors des essais réels.
+    \item \textbf{Optimisation algorithmique} : L'ajout d'une sécurité logique dans le code C permet désormais de s'affranchir de l'emballement de la commande en zone de saturation. Cette amélioration garantit, en simulation, le respect du critère de dépassement de \qty{5}{\%}.
+    \item \textbf{Prêt pour l'implémentation} : Le code C est prêt. Les configurations de registres pour le PWM (\qty{22}{kHz}) et l'ADC ont été vérifiées.
+\end{itemize}
+
+\textbf{Objectifs pour la Séance 5 :} Dès réception de la maquette PX222, nous procéderons à la mise en service réelle. L'objectif principal sera de confronter nos courbes Simulink aux relevés de l'oscilloscope et d'ajuster si nécessaire $\omega_{i}$ pour compenser les non-linéarités de la bobine réelle.
 
 \end{document}

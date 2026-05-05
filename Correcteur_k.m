@@ -3,6 +3,9 @@ Rs = 14;
 Rext = 12; 
 Rtot = Rs + Rext;
 L = 1.2; 
+L_V20 = 1.2 * 0.8;  % moins 20 pourcent
+L_V20_2 = 1.2 * 1.2 ; % plus 20 pourcent
+
 tau = L / Rtot;
 E0 = 60; 
 Ka = 2 * E0;
