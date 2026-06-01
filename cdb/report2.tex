@@ -622,4 +622,34 @@ Cette séance a été consacrée à la validation virtuelle de notre asservissem
 
 \textbf{Objectifs pour la Séance 5 :} Dès réception de la maquette PX222, nous procéderons à la mise en service réelle. L'objectif principal sera de confronter nos courbes Simulink aux relevés de l'oscilloscope et d'ajuster si nécessaire $\omega_{i}$ pour compenser les non-linéarités de la bobine réelle.
 
+\chapter{Semaine de projet}
+Cette section retrace les travaux  menés au cours de notre semaine dédiée à la finalisation du projet. L'objectif a été de mettre en œuvre l'asservissement numérique et analogique de courant, de résoudre les dernières problématiques matérielles et de confronter nos simulations aux relevés réels.
+
+\section{Adaptation matérielle du correcteur}
+Lors de la mise en œuvre de la partie analogique, on a été contraint de modifier la valeur du condensateur $C_{211}$, fixée définitivement à \qty{100}{nF}. Afin de maintenir la pulsation d'intégration optimale validée en simulation ($\omega_i \approx \qty{36,95}{rad/s}$), la résistance $R_{212}$ a été recalculée :
+\begin{equation}
+R_{212} = \frac{1}{\omega_i \cdot C_{211}} = \frac{1}{36,95 \times 100 \times 10^{-9}} \approx \qty{270}{k\Omega}
+\end{equation}
+
+Par ailleurs, l'absence de rebouclage en continu sur l'intégrateur entraînait une saturation systématique de la sortie, rendant le montage instable. Ce comportement est dû à l'intégration continue des courants de polarisation et de la tension de décalage (\textit{offset}) de l'AOP. 
+
+Pour corriger ce défaut, nous avons pris $R_{215} = \qty{4,7}{M\Omega}$ en parallèle sur $C_{211}$. Cette valeur, supérieure à $10 \times R_{212}$, garantit que la fréquence de coupure introduite est très inférieure à la pulsation d'intégration $\omega_i$, stabilisant l'AOP en continu sans altérer le comportement du correcteur.
+
+\section{Analyse des relevés expérimentaux et performances}
+Les mesures ont été effectuées sur la maquette en chargeant le système avec la bobine. Les signaux ont été capturés à l'oscilloscope.
+
+\subsection{Régime transitoire et respect du cahier des charges}
+L'analyse de la réponse à un échelon (Relevés \textit{Newfile1.png} et \textit{Newfile2.png}) met en évidence les performances temporelles suivantes :
+\begin{itemize}
+    \item \textbf{Dépassement ($D\,\%$)} : Le pic de courant atteint précisément la valeur limite fixée par le cahier des charges, soit un dépassement de \qty{5}{\%} ($1,05\text{ V}$ pour une consigne de $1\text{ V}$). Ce résultat valide parfaitement la robustesse de notre réglage numérique incluant le verrou logique de l'intégrateur.
+    \item \textbf{Constante de temps ($\tau$)} : Elle est mesurée graphiquement à \qty{63}{\%} de la valeur finale, ce qui donne $\tau = \dots\dots\text{ ms}$ (à compléter d'après vos curseurs).
+    \item \textbf{Temps de réponse à \qty{95}{\%} ($t_{r5\%}$)} : Le courant entre durablement dans la bande des \qty{5}{\%} au bout de $t_{r5\%} = \dots\dots\text{ ms}$ (à compléter d'après vos curseurs).
+\end{itemize}
+
+\subsection{Régime permanent et erreur statique}
+Le suivi des signaux en régime permanent (\textit{Newfile3.png}) montre l'évolution de la commande et du retour de courant. L'action intégrale remplit parfaitement son rôle :
+\begin{itemize}
+    \item \textbf{Erreur statique ($\varepsilon_S$)} : L'erreur en régime permanent est mesurée à $\varepsilon_S = \dots\dots\text{ V}$ (à compléter, théoriquement nulle ou de l'ordre de quelques mV liés au bruit de quantification). Le courant rejoint précisément la valeur de consigne imposée.
+\end{itemize}
+
 \end{document}
