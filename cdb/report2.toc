@@ -1,0 +1,36 @@
+\babel@toc {french}{}\relax 
+\contentsline {chapter}{\numberline {1}Mercredi 18 mars 2026}{3}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Modélisation des éléments du montage}{3}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Bobine}{3}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.1.2}Amplificateur}{3}{subsection.1.1.2}%
+\contentsline {subsection}{\numberline {1.1.3}Capteur de courant}{4}{subsection.1.1.3}%
+\contentsline {subsection}{\numberline {1.1.4}Calcul de la boucle ouverte}{4}{subsection.1.1.4}%
+\contentsline {section}{\numberline {1.2}Matériel et Sécurité}{4}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Liste du matériel prévu}{4}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Consignes de sécurité et protocoles}{4}{subsection.1.2.2}%
+\contentsline {section}{\numberline {1.3}Pour la prochaine séance}{5}{section.1.3}%
+\contentsline {chapter}{\numberline {2}Mardi 31 mars 2026}{7}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Analyse du signal de commande}{9}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Conclusion de séance}{9}{section.2.2}%
+\contentsline {chapter}{Interséance}{10}{chapter*.4}%
+\contentsline {chapter}{\numberline {3}Vendredi 24 avril 2026}{13}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Dimensionnement du correcteur analogique}{13}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Étage Proportionnel ($U205A$)}{13}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Étage Intégral ($U205B$)}{13}{subsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.1.3}Tableau récapitulatif des composants}{13}{subsection.3.1.3}%
+\contentsline {subsection}{\numberline {3.1.4}Configuration des cavaliers (Jumpers)}{14}{subsection.3.1.4}%
+\contentsline {section}{\numberline {3.2}Difficultés rencontrées et perspectives}{14}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Analyse des résultats Simulink}{15}{section.3.3}%
+\contentsline {chapter}{\numberline {4}Mardi 05 mai 2026}{16}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Étude de robustesse : Influence de la variation de l'inductance $L$}{16}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Observations expérimentales}{16}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Conclusion sur la robustesse}{17}{subsection.4.1.2}%
+\contentsline {section}{\numberline {4.2}Optimisation de la commande : Gestion de la saturation}{17}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Principe de la déconnexion de l'intégrateur}{17}{subsection.4.2.1}%
+\contentsline {section}{\numberline {4.3}Mise à jour de l'algorithme de commande}{17}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Conclusion de la séance 4}{18}{subsection.4.3.1}%
+\contentsline {chapter}{\numberline {5}Semaine de projet}{19}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Adaptation matérielle du correcteur}{19}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Analyse des relevés expérimentaux et performances}{19}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Régime transitoire et respect du cahier des charges}{19}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Régime permanent et erreur statique}{20}{subsection.5.2.2}%

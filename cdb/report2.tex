@@ -636,20 +636,38 @@ Par ailleurs, l'absence de rebouclage en continu sur l'intégrateur entraînait 
 Pour corriger ce défaut, nous avons pris $R_{215} = \qty{4,7}{M\Omega}$ en parallèle sur $C_{211}$. Cette valeur, supérieure à $10 \times R_{212}$, garantit que la fréquence de coupure introduite est très inférieure à la pulsation d'intégration $\omega_i$, stabilisant l'AOP en continu sans altérer le comportement du correcteur.
 
 \section{Analyse des relevés expérimentaux et performances}
-Les mesures ont été effectuées sur la maquette en chargeant le système avec la bobine. Les signaux ont été capturés à l'oscilloscope.
+Les mesures ont été effectuées sur la maquette \textbf{N°09} en chargeant le système avec la bobine \textbf{N°004}. Les signaux ont été capturés à l'oscilloscope.
 
 \subsection{Régime transitoire et respect du cahier des charges}
-L'analyse de la réponse à un échelon (Relevés \textit{Newfile1.png} et \textit{Newfile2.png}) met en évidence les performances temporelles suivantes :
+L'analyse de la réponse à un échelon met en évidence les performances temporelles suivantes :
 \begin{itemize}
-    \item \textbf{Dépassement ($D\,\%$)} : Le pic de courant atteint précisément la valeur limite fixée par le cahier des charges, soit un dépassement de \qty{5}{\%} ($1,05\text{ V}$ pour une consigne de $1\text{ V}$). Ce résultat valide parfaitement la robustesse de notre réglage numérique incluant le verrou logique de l'intégrateur.
-    \item \textbf{Constante de temps ($\tau$)} : Elle est mesurée graphiquement à \qty{63}{\%} de la valeur finale, ce qui donne $\tau = \dots\dots\text{ ms}$ (à compléter d'après vos curseurs).
-    \item \textbf{Temps de réponse à \qty{95}{\%} ($t_{r5\%}$)} : Le courant entre durablement dans la bande des \qty{5}{\%} au bout de $t_{r5\%} = \dots\dots\text{ ms}$ (à compléter d'après vos curseurs).
+    \item \textbf{Dépassement} : Le pic de courant atteint précisément la valeur limite fixée par le cahier des charges, soit un dépassement de \qty{5}{\%} ($1,05\text{ V}$ pour une consigne de $1\text{ V}$). Ce résultat valide la robustesse de notre réglage de correcteur.
+    \item \textbf{Constante de temps ($\tau$)} : Elle est mesurée graphiquement à \qty{63}{\%} de la valeur finale, ce qui donne $\tau \approx \qty{50}{ms}$.
+    \item \textbf{Temps de réponse à \qty{95}{\%}} : Le courant entre durablement dans la bande des \qty{5}{\%} au bout de $t_{r95\%} = 130 {ms}$.
 \end{itemize}
 
+\clearpage
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/Reponse_echelon_pratique.png}
+    \end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/echelon_un_ampere_pratique.png}
+    \end{figure}
+
 \subsection{Régime permanent et erreur statique}
-Le suivi des signaux en régime permanent (\textit{Newfile3.png}) montre l'évolution de la commande et du retour de courant. L'action intégrale remplit parfaitement son rôle :
+En se branchant sur le pin TP202 pour relever l'erreur statique (courbe bleu) on observe :
 \begin{itemize}
-    \item \textbf{Erreur statique ($\varepsilon_S$)} : L'erreur en régime permanent est mesurée à $\varepsilon_S = \dots\dots\text{ V}$ (à compléter, théoriquement nulle ou de l'ordre de quelques mV liés au bruit de quantification). Le courant rejoint précisément la valeur de consigne imposée.
+    \item \textbf{Erreur statique} : L'erreur en régime permanent est mesurée à $\varepsilon = 10{mV}$.
 \end{itemize}
+\clearpage
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/erreur_statique_pratique.png}
+    \end{figure}
 
 \end{document}
