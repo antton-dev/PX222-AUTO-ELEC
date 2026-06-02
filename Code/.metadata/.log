@@ -1,0 +1,201 @@
+!SESSION 2026-06-01 09:04:42.711 -----------------------------------------------
+eclipse.buildId=Version 2.1.1
+java.version=21.0.9
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=fr_FR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-06-01 09:05:57.354
+!MESSAGE Log4j2 initialized with config file C:\Users\antto\Documents\ESISAR\2A\Semestre 4\PX222\AUTO-ELEC\Code\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-06-01 09:06:03.993
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-01 09:06:22.211
+!MESSAGE Executed PowerShell command powershell.exe -Command "Get-CimInstance -ClassName Win32_SerialPort | Select-Object -ExpandProperty DeviceID":
+COM4
+COM5
+COM8
+COM7
+COM3
+COM6
+
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-01 09:06:22.214
+!MESSAGE port: COM4
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-01 09:06:22.215
+!MESSAGE port: COM5
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-01 09:06:22.216
+!MESSAGE port: COM8
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-01 09:06:22.218
+!MESSAGE port: COM7
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-01 09:06:22.219
+!MESSAGE port: COM3
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-01 09:06:22.219
+!MESSAGE port: COM6
+!SESSION 2026-06-02 08:35:10.277 -----------------------------------------------
+eclipse.buildId=Version 2.1.1
+java.version=21.0.9
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=fr_FR
+Framework arguments:  C:\Users\antto\Documents\ESISAR\2A\Semestre 4\PX222\AUTO-ELEC\Code\.cproject
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 C:\Users\antto\Documents\ESISAR\2A\Semestre 4\PX222\AUTO-ELEC\Code\.cproject
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-06-02 08:36:19.858
+!MESSAGE Log4j2 initialized with config file C:\Users\antto\Documents\ESISAR\2A\Semestre 4\PX222\AUTO-ELEC\Code\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-06-02 08:36:27.037
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:36:49.983
+!MESSAGE Executed PowerShell command powershell.exe -Command "Get-CimInstance -ClassName Win32_SerialPort | Select-Object -ExpandProperty DeviceID":
+COM4
+COM5
+COM8
+COM7
+COM3
+COM6
+
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:36:49.984
+!MESSAGE port: COM4
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:36:49.985
+!MESSAGE port: COM5
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:36:49.985
+!MESSAGE port: COM8
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:36:49.986
+!MESSAGE port: COM7
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:36:49.987
+!MESSAGE port: COM3
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:36:49.987
+!MESSAGE port: COM6
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:43:03.400
+!MESSAGE Executed PowerShell command powershell.exe -Command "Get-CimInstance -ClassName Win32_SerialPort | Select-Object -ExpandProperty DeviceID":
+COM4
+COM5
+COM8
+COM7
+COM3
+COM6
+COM9
+
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:43:03.402
+!MESSAGE port: COM4
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:43:03.402
+!MESSAGE port: COM5
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:43:03.403
+!MESSAGE port: COM8
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:43:03.403
+!MESSAGE port: COM7
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:43:03.404
+!MESSAGE port: COM3
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:43:03.404
+!MESSAGE port: COM6
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:43:03.404
+!MESSAGE port: COM9
+!SESSION 2026-06-02 08:43:52.732 -----------------------------------------------
+eclipse.buildId=Version 2.1.1
+java.version=21.0.9
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=fr_FR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data C:\Users\antto\Documents\ESISAR\2A\Semestre 4\PX222\AUTO-ELEC\Code
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-06-02 08:43:59.110
+!MESSAGE Log4j2 initialized with config file C:\Users\antto\Documents\ESISAR\2A\Semestre 4\PX222\AUTO-ELEC\Code\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-06-02 08:44:06.415
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:44:23.282
+!MESSAGE Executed PowerShell command powershell.exe -Command "Get-CimInstance -ClassName Win32_SerialPort | Select-Object -ExpandProperty DeviceID":
+COM4
+COM5
+COM8
+COM7
+COM3
+COM6
+COM9
+
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:44:23.282
+!MESSAGE port: COM4
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:44:23.283
+!MESSAGE port: COM5
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:44:23.283
+!MESSAGE port: COM8
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:44:23.284
+!MESSAGE port: COM7
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:44:23.284
+!MESSAGE port: COM3
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:44:23.285
+!MESSAGE port: COM6
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 08:44:23.285
+!MESSAGE port: COM9
+!SESSION 2026-06-02 09:07:47.760 -----------------------------------------------
+eclipse.buildId=Version 2.1.1
+java.version=21.0.9
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=fr_FR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data C:\Users\antto\Documents\ESISAR\2A\Semestre 4\PX222\AUTO-ELEC\Code
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-06-02 09:07:53.437
+!MESSAGE Log4j2 initialized with config file C:\Users\antto\Documents\ESISAR\2A\Semestre 4\PX222\AUTO-ELEC\Code\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-06-02 09:08:04.741
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 09:08:20.239
+!MESSAGE Executed PowerShell command powershell.exe -Command "Get-CimInstance -ClassName Win32_SerialPort | Select-Object -ExpandProperty DeviceID":
+COM4
+COM5
+COM8
+COM7
+COM3
+COM6
+COM9
+
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 09:08:20.240
+!MESSAGE port: COM4
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 09:08:20.240
+!MESSAGE port: COM5
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 09:08:20.242
+!MESSAGE port: COM8
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 09:08:20.243
+!MESSAGE port: COM7
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 09:08:20.243
+!MESSAGE port: COM3
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 09:08:20.244
+!MESSAGE port: COM6
+
+!ENTRY com.st.stm32cube.ide.mpu.remote.serial 1 1 2026-06-02 09:08:20.244
+!MESSAGE port: COM9

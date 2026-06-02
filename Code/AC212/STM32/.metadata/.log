@@ -1,0 +1,142 @@
+!SESSION 2026-04-22 16:39:17.722 -----------------------------------------------
+eclipse.buildId=Version 2.1.1
+java.version=21.0.9
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=macosx, ARCH=aarch64, WS=cocoa, NL=fr_FR
+Framework arguments:  -keyring /Users/fernandezlucas/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch aarch64 -keyring /Users/fernandezlucas/.eclipse_keyring
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-04-22 16:40:02.486
+!MESSAGE Log4j2 initialized with config file /Users/fernandezlucas/Desktop/Esisar/2A/PX/AC212/STM32/.metadata/.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-04-22 16:40:07.023
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-04-22 16:40:11.857
+!MESSAGE ProjectImporter: already registered
+!SESSION 2026-04-22 16:42:13.400 -----------------------------------------------
+eclipse.buildId=Version 2.1.1
+java.version=21.0.9
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=macosx, ARCH=aarch64, WS=cocoa, NL=fr_FR
+Framework arguments:  -keyring /Users/fernandezlucas/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch aarch64 -keyring /Users/fernandezlucas/.eclipse_keyring
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-04-22 16:42:29.767
+!MESSAGE Log4j2 initialized with config file /Users/fernandezlucas/Desktop/Esisar/2A/PX/AC212/STM32/.metadata/.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-04-22 16:42:31.768
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-04-22 17:00:14.658
+!MESSAGE Indexed 'PX212 - AC212' (3 sources, 53 headers) in 0,458 sec: 1 954 declarations; 2 863 references; 0 unresolved inclusions; 1 syntax errors; 2 unresolved names (0,042 %)
+!SESSION 2026-04-23 21:14:49.968 -----------------------------------------------
+eclipse.buildId=Version 2.1.1
+java.version=21.0.9
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=macosx, ARCH=aarch64, WS=cocoa, NL=fr_FR
+Framework arguments:  -keyring /Users/fernandezlucas/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch aarch64 -keyring /Users/fernandezlucas/.eclipse_keyring
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-04-23 21:14:58.777
+!MESSAGE Log4j2 initialized with config file /Users/fernandezlucas/Desktop/Esisar/2A/PX/AC212/STM32/.metadata/.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-04-23 21:15:02.521
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2026-04-23 22:46:58.978 -----------------------------------------------
+eclipse.buildId=Version 2.1.1
+java.version=21.0.9
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=macosx, ARCH=aarch64, WS=cocoa, NL=fr_FR
+Framework arguments:  -keyring /Users/fernandezlucas/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch aarch64 -keyring /Users/fernandezlucas/.eclipse_keyring
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-04-23 22:47:03.527
+!MESSAGE Log4j2 initialized with config file /Users/fernandezlucas/Desktop/Esisar/2A/PX/AC212/STM32/.metadata/.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-04-23 22:47:07.031
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2026-04-23 22:58:28.010 -----------------------------------------------
+eclipse.buildId=Version 2.1.1
+java.version=21.0.9
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=macosx, ARCH=aarch64, WS=cocoa, NL=fr_FR
+Framework arguments:  -keyring /Users/fernandezlucas/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch aarch64 -keyring /Users/fernandezlucas/.eclipse_keyring
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-04-23 22:58:31.943
+!MESSAGE Log4j2 initialized with config file /Users/fernandezlucas/Desktop/Esisar/2A/PX/AC212/STM32/.metadata/.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-04-23 22:58:35.377
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2026-04-24 13:52:09.626 -----------------------------------------------
+eclipse.buildId=Version 2.1.1
+java.version=21.0.9
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=macosx, ARCH=aarch64, WS=cocoa, NL=fr_FR
+Framework arguments:  -keyring /Users/fernandezlucas/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch aarch64 -keyring /Users/fernandezlucas/.eclipse_keyring
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-04-24 13:52:14.262
+!MESSAGE Log4j2 initialized with config file /Users/fernandezlucas/Desktop/Esisar/2A/PX/AC212/STM32/.metadata/.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-04-24 13:52:17.755
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.core.jobs 4 2 2026-04-24 14:02:58.076
+!MESSAGE An internal error occurred during: "Periodic workspace save.".
+!STACK 0
+java.lang.NumberFormatException: Cannot parse null string
+	at java.base/java.lang.Integer.parseInt(Integer.java:624)
+	at java.base/java.lang.Integer.parseInt(Integer.java:778)
+	at org.eclipse.core.internal.resources.SaveManager.validateMasterTableBeforeSave(SaveManager.java:1647)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1330)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1321)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1294)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1205)
+	at org.eclipse.core.internal.resources.DelayedSnapshotJob.run(DelayedSnapshotJob.java:52)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-04-24 14:02:58.724
+!MESSAGE Indexed 'PX212 - AC212' (5 sources, 53 headers) in 0,306 sec: 2 044 declarations; 3 076 references; 0 unresolved inclusions; 1 syntax errors; 2 unresolved names (0,039 %)
+
+!ENTRY org.eclipse.core.jobs 4 2 2026-04-24 14:07:58.103
+!MESSAGE An internal error occurred during: "Periodic workspace save.".
+!STACK 0
+java.lang.NumberFormatException: Cannot parse null string
+	at java.base/java.lang.Integer.parseInt(Integer.java:624)
+	at java.base/java.lang.Integer.parseInt(Integer.java:778)
+	at org.eclipse.core.internal.resources.SaveManager.validateMasterTableBeforeSave(SaveManager.java:1647)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1330)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1321)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1294)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1205)
+	at org.eclipse.core.internal.resources.DelayedSnapshotJob.run(DelayedSnapshotJob.java:52)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.core.jobs 4 2 2026-04-24 14:29:31.465
+!MESSAGE An internal error occurred during: "Periodic workspace save.".
+!STACK 0
+java.lang.NumberFormatException: Cannot parse null string
+	at java.base/java.lang.Integer.parseInt(Integer.java:624)
+	at java.base/java.lang.Integer.parseInt(Integer.java:778)
+	at org.eclipse.core.internal.resources.SaveManager.validateMasterTableBeforeSave(SaveManager.java:1647)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1330)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1321)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1294)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1205)
+	at org.eclipse.core.internal.resources.DelayedSnapshotJob.run(DelayedSnapshotJob.java:52)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+!SESSION 2026-05-05 14:17:18.263 -----------------------------------------------
+eclipse.buildId=Version 2.1.1
+java.version=21.0.9
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=macosx, ARCH=aarch64, WS=cocoa, NL=fr_FR
+Framework arguments:  -keyring /Users/fernandezlucas/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch aarch64 -keyring /Users/fernandezlucas/.eclipse_keyring
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-05-05 14:17:26.811
+!MESSAGE Log4j2 initialized with config file /Users/fernandezlucas/Desktop/Esisar/2A/PX/AC212/STM32/.metadata/.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-05-05 14:17:31.620
+!MESSAGE Started RMI Server, listening on port 41337
