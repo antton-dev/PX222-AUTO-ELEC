@@ -1,0 +1,14 @@
+14:26:39 **** Build of configuration Debug for project PX212 - AC212 ****
+make -j7 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DSTM32F103RBTx -DSTM32 -DSTM32F1 -DNUCLEO_F103RB -c -I../Inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "PX212 - AC212.elf" @"objects.list"   -mcpu=cortex-m3 -T"/Users/fernandezlucas/Desktop/Esisar/2A/PX/AC212/STM32/PX212 - AC212/STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="PX212 - AC212.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: PX212 - AC212.elf
+ 
+arm-none-eabi-size  PX212\ -\ AC212.elf 
+arm-none-eabi-objdump -h -S PX212\ -\ AC212.elf  > "PX212 - AC212.list"
+   text	   data	    bss	    dec	    hex	filename
+   2284	      4	   1572	   3860	    f14	PX212 - AC212.elf
+Finished building: default.size.stdout
+ 
+Finished building: PX212 - AC212.list
+ 

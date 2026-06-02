@@ -1,0 +1,41 @@
+#include <stdint.h>
+
+// --- ADRESSES POUR STM32F103 ---
+#define RCC_BASE      0x40021000
+#define GPIOA_BASE    0x40010800
+
+// Registre d'activation des horloges (APB2 sur F1)
+#define RCC_APB2ENR   (*(volatile uint32_t *)(RCC_BASE + 0x18))
+
+// Registre de configuration (CRL pour les pins 0 à 7)
+#define GPIOA_CRL     (*(volatile uint32_t *)(GPIOA_BASE + 0x00))
+
+// Registre de sortie (ODR)
+#define GPIOA_ODR     (*(volatile uint32_t *)(GPIOA_BASE + 0x0C))
+
+void delay(volatile uint32_t count) {
+    while (count--) {
+        __asm__("nop");
+    }
+}
+
+int main(void) {
+    // 1. Activer l'horloge pour le Port A (Bit 2 sur F1)
+    RCC_APB2ENR |= (1 << 2);
+
+    // 2. Configurer PA5 en mode Sortie (Output 2MHz, Push-Pull)
+    // Sur F1, chaque pin a 4 bits. Pour PA5, ce sont les bits 20 à 23.
+    // On met "0010" (0x2) pour Output 2MHz
+    GPIOA_CRL &= ~(0xF << 20); // On efface les 4 bits de PA5
+    GPIOA_CRL |= (0x2 << 20);  // On configure PA5
+
+    while (1) {
+        // Allume (Bit 5 à 1)
+        GPIOA_ODR |= (1 << 5);
+        delay(100000);
+
+        // Éteint (Bit 5 à 0)
+        GPIOA_ODR &= ~(1 << 5);
+        delay(100000);
+    }
+}

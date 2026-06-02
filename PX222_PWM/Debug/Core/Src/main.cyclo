@@ -1,0 +1,12 @@
+../Core/Src/main.c:65:13:PWM_SetAlpha	4
+../Core/Src/main.c:90:14:ADC_ToVoltage	1
+../Core/Src/main.c:95:21:ADC_ReadAll	3
+../Core/Src/main.c:118:14:ReadCurrent_A	1
+../Core/Src/main.c:131:14:ReadReference_A	1
+../Core/Src/main.c:150:5:main	3
+../Core/Src/main.c:211:6:SystemClock_Config	4
+../Core/Src/main.c:257:13:MX_ADC1_Init	4
+../Core/Src/main.c:313:13:MX_TIM1_Init	7
+../Core/Src/main.c:388:13:MX_USART2_UART_Init	2
+../Core/Src/main.c:421:13:MX_GPIO_Init	1
+../Core/Src/main.c:467:6:Error_Handler	1
