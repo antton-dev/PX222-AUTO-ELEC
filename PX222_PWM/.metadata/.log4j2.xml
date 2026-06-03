@@ -2,7 +2,7 @@
 <Configuration status="info">
     <ThresholdFilter level="INFO"/>
     <Appenders>
-        <RollingFile name="DEBUGFILE" fileName="/Users/fernandezlucas/Desktop/Esisar/2A/PX/PX222-AUTO-ELEC/PX222_PWM/.metadata/.ide.log" filePattern="/Users/fernandezlucas/Desktop/Esisar/2A/PX/PX222-AUTO-ELEC/PX222_PWM/.metadata/.ide.log-%d{yyyy-MM-dd}.log">
+        <RollingFile name="DEBUGFILE" fileName="C:/Users/antto/Documents/ESISAR/2A/Semestre 4/PX222/AUTO-ELEC/PX222_PWM/.metadata/.ide.log" filePattern="C:/Users/antto/Documents/ESISAR/2A/Semestre 4/PX222/AUTO-ELEC/PX222_PWM/.metadata/.ide.log-%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} [%p] %c{1}:%L - %m%n" />
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true" />

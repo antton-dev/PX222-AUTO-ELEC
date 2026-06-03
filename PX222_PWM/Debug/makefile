@@ -60,8 +60,8 @@ all: main-build
 main-build: PX222_PWM.elf secondary-outputs
 
 # Tool invocations
-PX222_PWM.elf PX222_PWM.map: $(OBJS) $(USER_OBJS) /Users/fernandezlucas/Desktop/Esisar/2A/PX/PX222-AUTO-ELEC/PX222_PWM/STM32F103RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "PX222_PWM.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"/Users/fernandezlucas/Desktop/Esisar/2A/PX/PX222-AUTO-ELEC/PX222_PWM/STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="PX222_PWM.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+PX222_PWM.elf PX222_PWM.map: $(OBJS) $(USER_OBJS) C:\Users\antto\Documents\ESISAR\2A\Semestre\ 4\PX222\AUTO-ELEC\PX222_PWM\STM32F103RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "PX222_PWM.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\antto\Documents\ESISAR\2A\Semestre 4\PX222\AUTO-ELEC\PX222_PWM\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="PX222_PWM.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
