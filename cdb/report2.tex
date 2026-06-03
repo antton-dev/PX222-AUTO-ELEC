@@ -670,4 +670,57 @@ En se branchant sur le pin TP202 pour relever l'erreur statique (courbe bleu) on
   \includegraphics[width=0.8\textwidth]{img/erreur_statique_pratique.png}
     \end{figure}
 
+
+\subsection{Passage de 40 à 60V}
+
+\subsubsection{Analyse du changement}
+Initialement, la tension d'alimentation avait été fixée à $E_0 = 40\text{ V}$ en raison du manque d'une grille de protection. Lors du passage à la tension maximale de $E_0 = 60\text{ V}$ les relevés expérimentaux ont mis en évidence une augmentation significative de l'erreur statique en régime permanent, dépassant les $10\text{ mV}$ observés précédemment.
+
+En conservant le réglage issu de la simulation ($\omega_i = 36,95\text{ rad/s}$), l'observation de la mesure du courant a révélé une \textbf{erreur statique ($\varepsilon$) trop importante} en régime permanent. L'intégrateur était trop lent pour compenser efficacement cette erreur. Il a donc été décidé de modifier $\omega_i$ afin de donner plus de poids à l'action intégrale et d'annuler cette erreur statique.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/analog_60V.png}
+    \end{figure}
+
+\clearpage
+
+\subsubsection{Calcul de la nouvelle pulsation d'intégration $\omega_i$}
+
+Lors de l'adaptation matérielle en semaine de projet, la valeur du condensateur de retour a été définitivement fixée à $C_{211} = 100\text{ nF}$. Nous avons choisi de changer R212. soit $R_{212} = 390\text{ k}\Omega$.
+
+Le calcul de la nouvelle pulsation d'intégration réelle $\omega_{i}$ donne alors :
+\begin{align}
+    \omega_{i} &= \frac{1}{390 \times 10^{3} \times 100 \times 10^{-9}} \\
+    \omega_{i} &= \frac{1}{0,039} \approx 25,64\text{ rad/s}
+\end{align}
+
+Nous retenons pour la suite la valeur expérimentale validée de $\omega_{i} \approx 25,6\text{ rad/s}$. Voici le nouveau graphique :
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/analog_60V_v2.png}
+    \end{figure}
+
+\subsubsection{Analyse des résultats expérimentaux et performances}
+L'introduction de cette nouvelle configuration ($\omega_i \approx 25,6\text{ rad/s}$ et $R_{212} = 390\text{ k}\Omega$) sous une alimentation de $60\text{ V}$ a permis d'obtenir le comportemnt attendu.
+
+Le décodage des curseurs de mesure permet de valider les performances temporelles suivantes du régime transitoire :
+\begin{itemize}
+    \item \textbf{Constante de temps $\tau$} : Mesurée graphiquement à $63\%$ de la valeur finale du courant de l'échelon, nous relevons :
+    \begin{equation*}
+        \tau = 37\text{ ms}
+    \end{equation*}
+    Le système est nettement plus rapide que lors des premiers essais physiques où $\tau$ avoisinait les $50\text{ ms}$.
+    
+    \item \textbf{Temps de réponse à 95\% ($t_{r95\%}$)} : Le courant rejoint et s'établit durablement dans la bande des $\pm 5\%$ autour de sa valeur de consigne au bout de :
+    \begin{equation*}
+        t_{r95\%} = 80\text{ ms}
+    \end{equation*}
+    Ce résultat marque une nette amélioration par rapport aux $130\text{ ms}$ mesurés précédemment.
+    
+    \item \textbf{Précision et Stabilité} : L'erreur statique en régime permanent est désormais parfaitement compensée, le signal de mesure convergeant idéalement vers la consigne sans oscillation parasite ni dépassement critique.
+\end{itemize}
+
+L'augmentation de la tension à $60\text{ V}$ combinée à l'abaissement de la pulsation d'intégration à $25,6\text{ rad/s}$ offre le meilleur compromis performance/robustesse pour notre asservissement de courant.
 \end{document}

@@ -47,7 +47,12 @@ TIM_HandleTypeDef htim1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
+const float Kp = 1.0f;           // Gain proportionnel à ajuster selon tes calculs
+const float Wi = 36.95f;         // Pulsation d'intégration (action intégrale)
+const float Ts = 0.001f;         // Période d'échantillonnage (1 ms)
 
+float integrale = 0.0f;          // Mémoire de l'intégrateur
+float commande = 0.55f;          // Initialisée au même niveau que ton PWM_SetAlpha de départ
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -190,19 +195,49 @@ int main(void)
 
   PWM_SetAlpha(0.55f);
 
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    // --- 1. LECTURE DES GRANDEURS PHYSIQUES ---
+    // Utilisation de tes fonctions qui lisent l'ADC 1 (Rank 1 et Rank 2)
+    float i_mes = ReadCurrent_A();   // Courant mesuré (image sur le canal 0)
+    float i_ref = ReadReference_A(); // Consigne externe (image sur le canal 1)
+
+    // --- 2. CALCUL DE L'ERREUR ---
+    float erreur = i_ref - i_mes;
+
+    // --- 3. CORRECTEUR PI AVEC PROTECTION VERROU (Anti-windup) ---
+    // Si la commande est saturée et que l'erreur pousse à saturer encore plus,
+    // on bloque l'intégration pour éviter l'emballement.
+    if (!((commande >= 1.0f && erreur > 0.0f) || (commande <= 0.0f && erreur < 0.0f)))
+    {
+        integrale += erreur * Ts;
+    }
+
+    float commande_brute = Kp * (erreur + Wi * integrale);
+
+    // --- 4. SATURATION ET PROTECTION DU PONT EN H ---
+    // On sature mathématiquement entre 0% (0.0) et 100% (1.0)
+    commande = commande_brute;
+    if (commande > 1.0f) commande = 1.0f;
+    if (commande < 0.0f) commande = 0.0f;
+
+    // --- 5. ACTION SUR LE SYSTÈME ---
+    // Application du nouveau rapport cyclique via ta fonction sécurisée
+    PWM_SetAlpha(commande);
+
+    // --- 6. CADENCEMENT ---
+    // Pause de 1 ms pour respecter la période d'échantillonnage Ts = 0.001s
+    HAL_Delay(1);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
-}
+} // <-- L'accolade manquante de fermeture du main() est bien placée ici !
 
 /**
   * @brief System Clock Configuration
@@ -477,7 +512,7 @@ void Error_Handler(void)
 #ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
+  * where the assert_param error has occurred.
   * @param  file: pointer to the source file name
   * @param  line: assert_param error line source number
   * @retval None
@@ -489,4 +524,4 @@ void assert_failed(uint8_t *file, uint32_t line)
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
-#endif /* USE_FULL_ASSERT */
+#endif /* USER CODE OPEN */

@@ -1,0 +1,19 @@
+!SESSION 2026-06-02 15:36:13.284 -----------------------------------------------
+eclipse.buildId=Version 2.1.1
+java.version=21.0.9
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=macosx, ARCH=aarch64, WS=cocoa, NL=fr_FR
+Framework arguments:  -keyring /Users/fernandezlucas/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch aarch64 -keyring /Users/fernandezlucas/.eclipse_keyring -data /Users/fernandezlucas/Desktop/Esisar/2A/PX/PX222-AUTO-ELEC/
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-06-02 15:36:16.422
+!MESSAGE Log4j2 initialized with config file /Users/fernandezlucas/Desktop/Esisar/2A/PX/PX222-AUTO-ELEC/.metadata/.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-06-02 15:36:18.324
+!MESSAGE Started RMI Server, listening on port 41340
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-06-02 15:36:37.571
+!MESSAGE Indexed 'PX222_PWM' (22 sources, 112 headers) in 1,45 sec: 10 040 declarations; 56 503 references; 2 unresolved inclusions; 36 syntax errors; 188 unresolved names (0,28 %)
+
+!ENTRY org.eclipse.equinox.p2.metadata.repository 4 1000 2026-06-02 15:36:40.829
+!MESSAGE No repository found at https://sw-center.st.com/stm32cubeide/updates/.
