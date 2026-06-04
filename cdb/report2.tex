@@ -723,4 +723,111 @@ Le décodage des curseurs de mesure permet de valider les performances temporell
 \end{itemize}
 
 L'augmentation de la tension à $60\text{ V}$ combinée à l'abaissement de la pulsation d'intégration à $25,6\text{ rad/s}$ offre le meilleur compromis performance/robustesse pour notre asservissement de courant.
+
+\subsection{Bilan de l'implémentation du correcteur numérique et limites de l'approche}
+
+\subsubsection{Analyse des difficultés et constat d'échec}
+L'objectif initial était de remplacer le correcteur analogique par un correcteur numérique implémenté sur la carte STM32 Nucleo-F103RB.
+
+Cependant, nous ne sommes pas parvenus à faire fonctionner l'asservissement en boucle fermée par cette méthode numérique. Lors des tests physiques sur la maquette, le système a présenté une instabilité critique et n'a pas été capable de réguler le courant autour de sa consigne. Plusieurs facteurs interdépendants expliquent ce comportement :
+\begin{itemize}
+    \item \textbf{Gigue temporelle (Jitter)} : L'utilisation de la fonction \texttt{HAL\_Delay()} au sein de la boucle principale détruit la déterminisme temporel indispensable à un calcul d'intégration discret ($I_k = I_{k-1} + \varepsilon_k \cdot T_s$). La période d'échantillonnage $T_s$ réelle a subi de fortes fluctuations.
+    \item \textbf{Conflits de pilotes matériels} : L'activation de l'ADC1 via la bibliothèque HAL a provoqué des conflits d'allocation de registres, générant des plantages de type \textit{HardFault} au démarrage de la carte. Bien qu'un contournement par accès direct aux registres (CMSIS) ait permis de restaurer la stabilité matérielle et de lire la broche PA5, le temps de conversion cumulé à la scrutation a bridé la réactivité de la boucle.
+\end{itemize}
+Face à ces limitations temporelles et à l'échéance de la soutenance, la chaîne numérique est restée figée dans sa configuration de validation de bas niveau (boucle ouverte).
+
+\subsubsection{Code source final embarqué (Validation de la chaîne PWM)}
+\begin{lstlisting}[language=C, caption={fichier main.c en BO}, label={code:main_final}]
+/* USER CODE BEGIN Header */
+/**
+  *****************************************************************
+  * @file           : main.c
+  * @brief          : Body du programme de validation de la chaine PWM
+  *****************************************************************
+  */
+/* USER CODE END Header */
+#include "main.h"
+
+TIM_HandleTypeDef htim1;
+
+void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+static void MX_TIM1_Init(void);
+
+int main(void)
+{
+  HAL_Init();
+  SystemClock_Config();
+
+  MX_GPIO_Init();
+  MX_TIM1_Init();
+
+  /* USER CODE BEGIN 2 */
+  // 1. Demarre le signal PWM physique sur la broche PA8
+  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
+
+  // 2. Active la sortie principale 
+  __HAL_TIM_MOE_ENABLE(&htim1);
+
+  // Rapport cyclique initial
+  __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 128);
+  /* USER CODE END 2 */
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+  while (1)
+  {
+    //rapport cyclique de 0 a 255
+    for (uint16_t dc = 0; dc <= 255; dc++)
+    {
+        __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, dc);
+        HAL_Delay(5); // Transition visible a l'oscilloscope
+    }
+
+    //rapport cyclique de 255 a 0
+    for (uint16_t dc = 255; dc > 0; dc--)
+    {
+        __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, dc);
+        HAL_Delay(5);
+    }
+    /* USER CODE END WHILE */
+  }
+}
+
+static void MX_TIM1_Init(void)
+{
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+  TIM_BreakDeadTimeConfigTypeDef sBreakDeadTimeConfig = {0};
+
+  htim1.Instance = TIM1;
+  htim1.Init.Prescaler = 0;
+  htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim1.Init.Period = 255; // Resolution fine demandee
+  htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim1.Init.RepetitionCounter = 0;
+  htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  HAL_TIM_Base_Init(&htim1);
+
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  HAL_TIM_ConfigClockSource(&htim1, &sClockSourceConfig);
+  HAL_TIM_PWM_Init(&htim1);
+
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_1);
+
+  sBreakDeadTimeConfig.AutomaticOutput = TIM_AUTOMATICOUTPUT_DISABLE;
+  HAL_TIMEx_ConfigBreakDeadTime(&htim1, &sBreakDeadTimeConfig);
+  HAL_TIM_MspPostInit(&htim1);
+}
+
+static void MX_GPIO_Init(void)
+{
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+}
+\end{lstlisting}
+
 \end{document}

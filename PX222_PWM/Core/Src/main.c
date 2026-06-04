@@ -2,7 +2,7 @@
 /**
   ******************************************************************************
   * @file           : main.c
-  * @brief          : Main program body
+  * @brief          : Main program body (Génération d'un signal constant sur PA8)
   ******************************************************************************
   * @attention
   *
@@ -47,7 +47,11 @@ TIM_HandleTypeDef htim1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-
+/* * Définition du rapport cyclique constant pour le test :
+ * 0.50f = Neutre (Tension moyenne nulle)
+ * 0.58f = Tension constante positive (Idéal pour les tests de puissance à 60V)
+ */
+#define RAPPORT_CYCLIQUE_TEST  0.58f
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -62,70 +66,6 @@ static void MX_ADC1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-#define ADC_VREF        3.3f
-#define ADC_MAX         4095.0f
-
-#define ALPHA_NEUTRE    0.50f
-
-/*
- * Sécurité pour les premiers essais.
- * On limite la commande entre 45 % et 55 %.
- */
-#define ALPHA_MIN       0.40f
-#define ALPHA_MAX       0.60f
-
-
-/*
- * Correcteur PI issu du rapport :
- * R(p) = k(1 + wi / p)
- */
-static float Kp = 1.00f;
-static float Wi = 36.95f;
-
-/*
- * Période d'échantillonnage visée : 1 ms.
- */
-#define TE_S 0.001f
-
-/*
- * Consigne de courant.
- * Pour les premiers essais à E0 = 20 V, rester faible.
- */
-static float i_ref_A = 0.05f;
-
-/*
- * Mémoire de l'intégrale.
- * Unité : A.s
- */
-static float integrale = 0.0f;
-
-/*
- * Limite logicielle de l'intégrale.
- * Protection supplémentaire contre l'emballement.
- */
-#define INTEGRALE_MIN -0.020f
-#define INTEGRALE_MAX  0.020f
-
-/*
- * Variables visibles en debug.
- */
-volatile float dbg_i_mes_A = 0.0f;
-volatile float dbg_i_ref_A = 0.0f;
-volatile float dbg_erreur_A = 0.0f;
-volatile float dbg_alpha = 0.0f;
-
-volatile float dbg_integrale = 0.0f;
-volatile float dbg_u_pi = 0.0f;
-volatile float dbg_alpha_unsat = 0.0f;
-volatile float dbg_alpha_sat = 0.0f;
-
-static void ResetPI(void)
-{
-  integrale = 0.0f;
-}
-
-static float offset_i_mes_A = 0.0f;
-
 static float Saturate(float x, float min, float max)
 {
   if (x < min) return min;
@@ -133,6 +73,10 @@ static float Saturate(float x, float min, float max)
   return x;
 }
 
+/**
+  * @brief  Applique le rapport cyclique (alpha) sur le Timer 1 (PA8)
+  * @param  alpha : flottant compris entre 0.0f (0%) et 1.0f (100%)
+  */
 static void PWM_SetAlpha(float alpha)
 {
   alpha = Saturate(alpha, 0.0f, 1.0f);
@@ -146,82 +90,6 @@ static void PWM_SetAlpha(float alpha)
   }
 
   __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, ccr);
-}
-
-static float ADC_ToVoltage(uint16_t adc)
-{
-  return ADC_VREF * ((float)adc / ADC_MAX);
-}
-
-typedef struct
-{
-  uint16_t mes_i_adc;
-  uint16_t ref_i_adc;
-} ADC_Values_t;
-
-static ADC_Values_t ADC_ReadAll(void)
-{
-  ADC_Values_t values = {0};
-
-  HAL_ADC_Start(&hadc1);
-
-  if (HAL_ADC_PollForConversion(&hadc1, 10) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  values.mes_i_adc = HAL_ADC_GetValue(&hadc1);
-
-  if (HAL_ADC_PollForConversion(&hadc1, 10) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  values.ref_i_adc = HAL_ADC_GetValue(&hadc1);
-
-  HAL_ADC_Stop(&hadc1);
-
-  return values;
-}
-
-static float ReadCurrent_A(void)
-{
-  ADC_Values_t adc = ADC_ReadAll();
-
-  /*
-   * Sujet : Mes_I donne 1 V pour 1 A.
-   */
-  float v_mes = ADC_ToVoltage(adc.mes_i_adc);
-  float i_mes = v_mes;
-
-  return i_mes - offset_i_mes_A;
-}
-
-static float ReadCurrentFiltered_A(void)
-{
-  float sum = 0.0f;
-
-  for (int k = 0; k < 16; k++)
-  {
-    sum += ReadCurrent_A();
-  }
-
-  return sum / 16.0f;
-}
-
-static void CalibrateCurrentOffset(void)
-{
-  float sum = 0.0f;
-
-  PWM_SetAlpha(ALPHA_NEUTRE);
-  HAL_Delay(500);
-
-  for (int k = 0; k < 200; k++)
-  {
-    ADC_Values_t adc = ADC_ReadAll();
-    sum += ADC_ToVoltage(adc.mes_i_adc);
-    HAL_Delay(1);
-  }
-
-  offset_i_mes_A = sum / 200.0f;
 }
 /* USER CODE END 0 */
 
@@ -258,103 +126,42 @@ int main(void)
   MX_USART2_UART_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
+
+  /* Démarrage du calibrage ADC (Laissé pour éviter les dérives de mesure) */
   if (HAL_ADCEx_Calibration_Start(&hadc1) != HAL_OK)
   {
     Error_Handler();
   }
 
+  /* Démarrage de la PWM sur le Timer 1 Canal 1 */
   if (HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1) != HAL_OK)
   {
     Error_Handler();
   }
 
+  /* Activation de la sortie principale (obligatoire pour TIM1) */
   __HAL_TIM_MOE_ENABLE(&htim1);
 
-  /*
-   * Démarrage au neutre.
-   */
-  PWM_SetAlpha(ALPHA_NEUTRE);
-
-  /*
-   * Calibration de l'offset de mesure courant.
-   * À faire avec alpha = 0.50 et courant supposé nul.
-   */
-  CalibrateCurrentOffset();
-
-
-  ResetPI();
+  /* Application initiale du rapport cyclique constant de test */
+  PWM_SetAlpha(RAPPORT_CYCLIQUE_TEST);
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  uint32_t last_tick = HAL_GetTick();
-
   while (1)
   {
-    /*
-     * Boucle de correction toutes les 1 ms.
+    /* * On ré-applique continuellement la valeur fixe de test (58 %).
+     * Aucune boucle d'asservissement n'est active ici.
      */
-	  if ((HAL_GetTick() - last_tick) >= 1)
-	  {
-	    last_tick += 1;
+    PWM_SetAlpha(RAPPORT_CYCLIQUE_TEST);
 
-	    float i_mes_A = ReadCurrentFiltered_A();
+    HAL_Delay(100); // Petite pause pour soulager le processeur
+    /* USER CODE END WHILE */
 
-	    /*
-	     * Erreur de courant.
-	     * Mes_I est en 1 V = 1 A.
-	     */
-	    float erreur_A = i_ref_A - i_mes_A;
-
-	    /*
-	     * Calcul de la commande avant mise à jour éventuelle de l'intégrale.
-	     * u_pi représente l'écart à ajouter autour du neutre alpha = 0.5.
-	     */
-	    float u_pi_avant = Kp * (erreur_A + Wi * integrale);
-	    float alpha_avant = ALPHA_NEUTRE + u_pi_avant;
-
-	    /*
-	     * Anti-windup inspiré de votre rapport :
-	     * on bloque l'intégrateur si la commande est saturée
-	     * ET si l'erreur pousse encore plus dans le sens de la saturation.
-	     */
-	    uint8_t saturation_haute = (alpha_avant >= ALPHA_MAX);
-	    uint8_t saturation_basse = (alpha_avant <= ALPHA_MIN);
-
-	    uint8_t bloquer_integrale =
-	        (saturation_haute && erreur_A > 0.0f) ||
-	        (saturation_basse && erreur_A < 0.0f);
-
-	    if (!bloquer_integrale)
-	    {
-	      integrale += erreur_A * TE_S;
-	      integrale = Saturate(integrale, INTEGRALE_MIN, INTEGRALE_MAX);
-	    }
-
-	    /*
-	     * Calcul PI final.
-	     */
-	    float u_pi = Kp * (erreur_A + Wi * integrale);
-
-	    float alpha_unsat = ALPHA_NEUTRE + u_pi;
-	    float alpha = Saturate(alpha_unsat, ALPHA_MIN, ALPHA_MAX);
-
-	    PWM_SetAlpha(alpha);
-
-	    /*
-	     * Variables observables dans le debugger.
-	     */
-	    dbg_i_mes_A = i_mes_A;
-	    dbg_i_ref_A = i_ref_A;
-	    dbg_erreur_A = erreur_A;
-	    dbg_integrale = integrale;
-	    dbg_u_pi = u_pi;
-	    dbg_alpha_unsat = alpha_unsat;
-	    dbg_alpha_sat = alpha;
-	    dbg_alpha = alpha;
-	  }
+    /* USER CODE BEGIN 3 */
   }
+  /* USER CODE END 3 */
 }
 
 /**
@@ -630,7 +437,7 @@ void Error_Handler(void)
 #ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
+  * where the assert_param error has occurred.
   * @param  file: pointer to the source file name
   * @param  line: assert_param error line source number
   * @retval None
