@@ -108,7 +108,7 @@ L'objectif de ce projet est de réaliser un asservissement de courant dans un ci
 Pour commencer, nous avons modélisé les différents éléments du montage à l'aide de leurs fonctions de transfert respectives.
 
 \subsection{Bobine}
-Pour l'étude, nous retenons un \textbf{modèle série simple} de la bobine à noyau de fer (BNF). Ce modèle prend en compte l'inductance $L$ représentant l'auto-induction et la résistance série $R$ constituée par l'enroulement en cuivre. 
+Pour l'étude, nous utilisons une bobine à noyau de fer (BNF). Ce modèle prend en compte l'inductance $L$ et la résistance série $R$ constituée par l'enroulement en cuivre. 
 
 Nous y ajoutons en série une résistance de puissance $R_{pu} = \qty{12}{\ohm}$ afin de diviser la constante de temps du système par 2. D'après les mesures du semestre précédent (PX221), nous savons que la résistance interne de la bobine est $R = \qty{14}{\ohm}$ et son inductance est $L = \qty{1,2}{\henry}$.
 
@@ -174,7 +174,6 @@ Pour la mise en œuvre pratique de cet asservissement, nous utiliserons les équ
 La manipulation de puissances importantes imposera le respect strict des consignes suivantes :
 \begin{itemize}
     \item \textbf{Protection électrique} : Toute tension supérieure à \qty{50}{V} présentant un danger mortel, nous serons donc extremement attentifs lors des essais sous tension.
-    \item \textbf{Sondes différentielles} : Pour éviter tout court-circuit via la terre de l'oscilloscope lors des mesures sur le réseau ou le pont flottant, l'usage de sondes différentielles sera obligatoire.
     \item \textbf{Risque thermique} : La résistance de puissance pourra atteindre des températures supérieures à \qty{100}{\degreeCelsius} ; nous éviterons tout contact direct durant et après les essais.
 \end{itemize}
 
@@ -310,7 +309,7 @@ Pour garantir la précision temporelle de l'asservissement, nous avons choisi un
 \begin{itemize}
     \item \textbf{PWM (TIM1\_CH1 sur PA8)} : Configuration d'une porteuse à environ \qty{22}{kHz} pour piloter le pont en H de la maquette.
     \item \textbf{Acquisition (ADC1\_IN5 sur PA5)} : Lecture de l'image du courant convertie à \qty{1}{V}/\qty{1}{A} par l'amplificateur d'instrumentation de la carte.
-    \item \textbf{Régulation} : Implémentation de la loi de commande avec $k=1$ et $\omega_i = \qty{36,95}{rad/s}$. Une saturation logicielle à \qty{1}{V} est ajoutée pour protéger le système.
+    \item \textbf{Régulation} : Implémentation de la commande avec $k=1$ et $\omega_i = \qty{36,95}{rad/s}$. Une saturation logicielle à \qty{1}{V} est ajoutée pour protéger le système.
 \end{itemize}
 
 \section*{Code source concernant les registres et le setup de la carte}
@@ -350,11 +349,11 @@ void setup(void) {
     // 1. Activer horloges : GPIOA, ADC1, TIM1 et AFIO
     RCC_APB2ENR |= (1 << 0) | (1 << 2) | (1 << 9) | (1 << 11);
 
-    // 2. Configurer PA8 en "Alternate Function Push-Pull" (PWM TIM1_CH1)
+    // 2. Configurer PA8 (PWM TIM1_CH1)
     GPIOA_CRH &= ~(0xF << 0);
     GPIOA_CRH |= (0xB << 0); // Speed 50MHz, AF Push-Pull
 
-    // 3. Configurer PA5 en mode Analogique (Entree mesure courant)
+    // 3. Configurer PA5 en mode Analogique 
     GPIOA_CRL &= ~(0xF << 20);
 
     // 4. Configurer TIM1 pour PWM a 22kHz
@@ -380,9 +379,10 @@ void delay_ms(uint32_t ms) {
     for (uint32_t i = 0; i < ms * 8000; i++) __asm__("nop");
 }
 
-
-
 \end{lstlisting}
+
+\clearpage
+
 \section*{Code source concernant les calculs du correcteur PI et de la commande}
 \begin{lstlisting}[language=C, caption={Implémentation du correcteur PI sur STM32F103}, captionpos=b]
 // --- PARAMETRES DU CORRECTEUR PI ---
@@ -425,7 +425,7 @@ float consigne = 1.0f;          // 1V <=> 1A
 \section{Dimensionnement du correcteur analogique}
 Pour transposer nos résultats de simulation sur la maquette PX222, nous devons déterminer les valeurs des composants (résistances et condensateurs) à installer sur les supports tulipes des amplificateurs opérationnels $U205A$ et $U205B$.
 
-\subsection{Étage Proportionnel ($U205A$)}
+\subsection{Étage Proportionnel}
 Le premier étage réalise le gain proportionnel $k$ via une structure d'amplificateur inverseur. Le gain est défini par le rapport des résistances $R_{211}$ et $R_{208}$ :
 \begin{equation*}
     k = \frac{R_{211}}{R_{208}}
@@ -435,7 +435,7 @@ Afin de respecter notre réglage $k=1$ (pour éviter la saturation du PWM), nous
     \item \textbf{Choix :} $R_{208} = \qty{10}{k\ohm}$ et $R_{211} = \qty{10}{k\ohm}$.
 \end{itemize}
 
-\subsection{Étage Intégral ($U205B$)}
+\subsection{Étage Intégral}
 Le second étage réalise l'action intégrale $(1 + \frac{\omega_i}{p})$ via une structure non-inverseuse. Le paramètre d'intégration $\omega_i$ est lié aux composants $R_{212}$ et $C_{211}$ par la relation :
 \begin{equation*}
     \omega_i = \frac{1}{R_{212} \cdot C_{211}}
@@ -494,9 +494,9 @@ Le paramétrage de la maquette PX222 s'effectue via une série de cavaliers. Le 
 
 \section{Difficultés rencontrées et perspectives}
 
-Au cours de cette séance, nous avons tenté de simuler manuellement le comportement de la carte et de la boucle d'asservissement. Cependant, cette approche n'a pas permis d'obtenir des résultats concluants : la complexité de la gestion temporelle et de la saturation logicielle s'est avérée trop importante pour obtenir des prédictions fiables.
+Au cours de cette séance, nous avons tenté de simuler manuellement le comportement de la carte et de la boucle d'asservissement. Cependant, cette approche n'a pas permis d'obtenir des résultats concluants : la saturation logicielle s'est avérée trop importante pour obtenir des prédictions fiables.
 
-En conséquence, pour la séance suivante, nous prévoyons de modéliser l'intégralité du système sur \textbf{Simulink}. Ce "jumeau numérique" permettra de valider nos réglages avant les tests physiques en intégrant les blocs suivants :
+En conséquence, pour la séance suivante, nous prévoyons de modéliser l'intégralité du système sur \textbf{Simulink}. Cette simulation permettra de valider nos réglages avant les tests physiques en intégrant les blocs suivants :
 
 \begin{itemize}
     \item \textbf{Modélisation de la chaîne directe} : Nous utiliserons un bloc \textit{Step} pour la consigne de \qty{1}{A}, suivi de notre correcteur PI ($k=1, \omega_i = \qty{36,95}{rad/s}$) et d'un bloc de \textit{Saturation} bridé entre \qty{0}{V} et \qty{1}{V} pour simuler la limite réelle du convertisseur PWM.
@@ -705,7 +705,7 @@ Nous retenons pour la suite la valeur expérimentale validée de $\omega_{i} \ap
 \subsubsection{Analyse des résultats expérimentaux et performances}
 L'introduction de cette nouvelle configuration ($\omega_i \approx 25,6\text{ rad/s}$ et $R_{212} = 390\text{ k}\Omega$) sous une alimentation de $60\text{ V}$ a permis d'obtenir le comportemnt attendu.
 
-Le décodage des curseurs de mesure permet de valider les performances temporelles suivantes du régime transitoire :
+La lecture graphique permet de valider les performances temporelles suivantes du régime transitoire :
 \begin{itemize}
     \item \textbf{Constante de temps $\tau$} : Mesurée graphiquement à $63\%$ de la valeur finale du courant de l'échelon, nous relevons :
     \begin{equation*}
@@ -729,12 +729,7 @@ L'augmentation de la tension à $60\text{ V}$ combinée à l'abaissement de la p
 \subsubsection{Analyse des difficultés et constat d'échec}
 L'objectif initial était de remplacer le correcteur analogique par un correcteur numérique implémenté sur la carte STM32 Nucleo-F103RB.
 
-Cependant, nous ne sommes pas parvenus à faire fonctionner l'asservissement en boucle fermée par cette méthode numérique. Lors des tests physiques sur la maquette, le système a présenté une instabilité critique et n'a pas été capable de réguler le courant autour de sa consigne. Plusieurs facteurs interdépendants expliquent ce comportement :
-\begin{itemize}
-    \item \textbf{Gigue temporelle (Jitter)} : L'utilisation de la fonction \texttt{HAL\_Delay()} au sein de la boucle principale détruit la déterminisme temporel indispensable à un calcul d'intégration discret ($I_k = I_{k-1} + \varepsilon_k \cdot T_s$). La période d'échantillonnage $T_s$ réelle a subi de fortes fluctuations.
-    \item \textbf{Conflits de pilotes matériels} : L'activation de l'ADC1 via la bibliothèque HAL a provoqué des conflits d'allocation de registres, générant des plantages de type \textit{HardFault} au démarrage de la carte. Bien qu'un contournement par accès direct aux registres (CMSIS) ait permis de restaurer la stabilité matérielle et de lire la broche PA5, le temps de conversion cumulé à la scrutation a bridé la réactivité de la boucle.
-\end{itemize}
-Face à ces limitations temporelles et à l'échéance de la soutenance, la chaîne numérique est restée figée dans sa configuration de validation de bas niveau (boucle ouverte).
+Cependant, nous ne sommes pas parvenus à faire fonctionner l'asservissement en boucle fermée par cette méthode numérique. Lors des tests physiques sur la maquette, le système a présenté une instabilité critique et n'a pas été capable de réguler le courant autour de sa consigne.
 
 \subsubsection{Code source final embarqué (Validation de la chaîne PWM)}
 \begin{lstlisting}[language=C, caption={fichier main.c en BO}, label={code:main_final}]
@@ -829,5 +824,9 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
 }
 \end{lstlisting}
+
+
+\clearpage
+
 
 \end{document}
